@@ -3,6 +3,8 @@ import { signInWithPopup } from "firebase/auth";
 import { auth } from './firebase.js'
 import { GoogleAuthProvider } from "firebase/auth";
 import { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const [userToken, setUserToken] = useState(null); // userToken
@@ -10,7 +12,8 @@ function App() {
   const googleOnClick = () => {
     if (userToken) { // Log out if there is a user
       setUserToken(null)
-      setLabel('Sign In With Google')
+      setLabel('Sign In With Google');
+      toast.success("Bye Bye")
       localStorage.removeItem('koredeGoogleAuth')
     } else { // Sign in user
       const provider = new GoogleAuthProvider();
@@ -19,6 +22,7 @@ function App() {
           // This gives you a Google Access Token. You can use it to access the Google API.
           localStorage.setItem('koredeGoogleAuth', result.user.accessToken)
           setUserToken(result.user.accessToken)
+          toast.success("Login Succesfully")
           setLabel('Sign Out')
           console.log(result.user) // user infos
         }).catch((error) => {
@@ -40,6 +44,8 @@ function App() {
     /* Copy the text inside the text field */
     navigator.clipboard.writeText(copiedText);
 
+    toast.success("Token Copied!!")
+
   }
   useEffect(() => { // keep user consisitent in local storage
     if (localStorage.koredeGoogleAuth) {
@@ -51,17 +57,21 @@ function App() {
   }, [])
 
   return (
-    <div className="text-center flex flex-col justify-center p-10 h-auto space-y-3">
-      {
-        userToken && <p> <span>your Token:</span> <span onClick={copyToClipboard} className="font-bold cursor-pointer block break-all">{userToken}</span> </p>
-      }
+    <>
+      <ToastContainer autoClose={'2000'} />
+      <div className="text-center flex flex-col justify-center p-10 h-auto space-y-3">
+        {
+          userToken && <p> <span>your Token:</span> <span onClick={copyToClipboard} className="font-bold cursor-pointer block break-all">{userToken}</span> </p>
+        }
 
-      <GoogleButton
-        label={label}
-        className='!mx-auto'
-        onClick={googleOnClick}
-      />
-    </div>
+        <GoogleButton
+          label={label}
+          className='!mx-auto'
+          onClick={googleOnClick}
+        />
+      </div>
+    </>
+
   );
 }
 
