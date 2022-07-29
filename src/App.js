@@ -31,6 +31,16 @@ function App() {
     }
 
   }
+
+  const copyToClipboard = (e) => {
+    /* Get the text */
+    let copiedText = e.currentTarget.innerText
+
+
+    /* Copy the text inside the text field */
+    navigator.clipboard.writeText(copiedText);
+
+  }
   useEffect(() => { // keep user consisitent in local storage
     if (localStorage.koredeGoogleAuth) {
       const token = localStorage.getItem('koredeGoogleAuth')
@@ -43,7 +53,7 @@ function App() {
   return (
     <div className="text-center flex flex-col justify-center p-10 h-auto space-y-3">
       {
-        userToken && <p> <span>your Token:</span> <span className="font-bold block break-all">{userToken}</span> </p>
+        userToken && <p> <span>your Token:</span> <span onClick={copyToClipboard} className="font-bold cursor-pointer block break-all">{userToken}</span> </p>
       }
 
       <GoogleButton
