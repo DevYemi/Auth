@@ -17,10 +17,8 @@ function App() {
       signInWithPopup(auth, provider)
         .then((result) => {
           // This gives you a Google Access Token. You can use it to access the Google API.
-          const credential = GoogleAuthProvider.credentialFromResult(result);
-          const token = credential.accessToken;
-          localStorage.setItem('koredeGoogleAuth', token)
-          setUserToken(token)
+          localStorage.setItem('koredeGoogleAuth', result.user.accessToken)
+          setUserToken(result.user.accessToken)
           setLabel('Sign Out')
           console.log(result.user) // user infos
         }).catch((error) => {
@@ -43,13 +41,14 @@ function App() {
   }, [])
 
   return (
-    <div className="flex space-y-3 flex-col justify-center items-center h-screen">
+    <div className="text-center flex flex-col justify-center p-10 h-auto space-y-3">
       {
-        userToken && <p> <span>your Token:</span> <span className="font-bold block max-w-[300px] break-words">{userToken}</span> </p>
+        userToken && <p> <span>your Token:</span> <span className="font-bold block break-all">{userToken}</span> </p>
       }
 
       <GoogleButton
         label={label}
+        className='!mx-auto'
         onClick={googleOnClick}
       />
     </div>
