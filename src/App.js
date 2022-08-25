@@ -99,7 +99,8 @@ function App() {
       const token = localStorage.getItem('koredeGoogleAuth')
       setUserGoogleToken(token)
       setGoogleLabel('Sign Out')
-    } else if (localStorage.koredeFCMAuth) {
+    }
+    if (localStorage.koredeFCMAuth) {
       const token = localStorage.getItem('koredeFCMAuth')
       setUserFcmToken(token)
       setFcmLabel("Delete Fcm Token")
